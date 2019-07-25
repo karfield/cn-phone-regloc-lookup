@@ -1,13 +1,11 @@
-package phonedata
+package phoneregloc
+
+//go:generate go run generate.go
 
 import (
 	"bytes"
 	"errors"
 	"fmt"
-	"io/ioutil"
-	"os"
-	"path"
-	"runtime"
 )
 
 const (
@@ -34,7 +32,6 @@ type PhoneRecord struct {
 }
 
 var (
-	content     []byte
 	CardTypemap = map[byte]string{
 		CMCC:   "中国移动",
 		CUCC:   "中国联通",
@@ -43,23 +40,7 @@ var (
 		CUCC_v: "中国联通虚拟运营商",
 		CMCC_v: "中国移动虚拟运营商",
 	}
-	total_len, firstoffset int32
 )
-
-func init() {
-	dir := os.Getenv("PHONE_DATA_DIR")
-	if dir == "" {
-		_, fulleFilename, _, _ := runtime.Caller(0)
-		dir = path.Dir(fulleFilename)
-	}
-	var err error
-	content, err = ioutil.ReadFile(path.Join(dir, PHONE_DAT))
-	if err != nil {
-		panic(err)
-	}
-	total_len = int32(len(content))
-	firstoffset = get4(content[INT_LEN : INT_LEN*2])
-}
 
 func Debug() {
 	fmt.Println(version())

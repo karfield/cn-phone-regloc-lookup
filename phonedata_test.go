@@ -1,4 +1,4 @@
-package phonedata
+package phoneregloc
 
 import (
 	"fmt"
